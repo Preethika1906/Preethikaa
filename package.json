@@ -1,0 +1,21 @@
+{
+  "name": "preethikaa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Preethika1906/Preethikaa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Preethika1906/Preethikaa/issues"
+  },
+  "homepage": "https://github.com/Preethika1906/Preethikaa#readme"
+}
