@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Preethika1906/Preethikaa/issues"
   },
-  "homepage": "https://github.com/Preethika1906/Preethikaa#readme"
+  "homepage": "https://github.com/Preethika1906/Preethikaa#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
