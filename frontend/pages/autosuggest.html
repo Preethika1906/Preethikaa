@@ -3,90 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .left-bar {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-        }
-        .right-bar {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-        }
-        .search-section {
-            text-align: center;
-            margin-top: 100px;
-        }
-        .logo-first {
-            color: #3498db;
-        }
-        .logo-last {
-            color: #1b1918;
-        }
-        .tag-line {
-            color: #555;
-        }
-        .lens{
-            position:relative;
-            left: 40px;
-        }
-        .search-box {
-            padding: 15px 15px 15px 45px;
-            border-radius:30px;
-            width:40%;
-        
-        }
-        #suggestion-box{
-            border: 1px solid #0b0a0a;
-            width: 45%;
-            padding: 15px 15px 15px 45px;
-            margin: center;
-        }
-    </style>
+    <title>BeingInfinity</title>
+    <link rel="stylesheet" href="autosuggest.css">
 </head>
 <body>
-    <div>
-    <span class="left-bar">&#9881; </span>
-    <span class="right-bar">&#x2022; online | &#x1F552; -ms</span>
+
+<div class="container">
+
+    <div class="card">
+
+   
+    <div class="top-icons">
+        <span class="gear">&#9881;</span>
+        <div class="status-group">
+            <span>&bull;</span>
+            <span>online</span>
+            <span>|</span>
+            <span>&#128339;</span>
+            <span>- ms</span>
+        </div>
     </div>
-    <div class="search-section">
-    <h1><span class="logo-first">Being</span><span>Unique</span></h1>
-    <p class="tag-line">One million phrases,Four algorithms,Prefix Based Auto Suggest</p>
-    <span>
-        <span class="lens"> &#128269;</span>
-        <input class="search-box" placeholder="Start typing to search pl...">
-    </span>
-    <div id="suggestion-box">
-        suggestions will be displayed here
+
+
+    <h1><span class="purple">Being</span>Infinity</h1>
+
+    <p class="subtitle">
+        One million phrases. Four algorithms. Prefix Based Auto Suggest.
+    </p>
+
+    <div class="search-box">
+        <span class="search-icon">&#128269;</span>
+        <input id="search-box" type="text" placeholder="Start typing to search phrase">
     </div>
+
+    <div class="suggestion-box">
+        <!-- <div class="suggestion-item">Suggestion box</div> -->
+    
     </div>
 
+</div>
+<script>
+    var searchBox = document.getElementById('search-box');
+    var suggestionBox = document.querySelector('.suggestion-box');
 
-    <script>
-        var searchBox = document.getElementById("search-box");
-        searchBox.addEventListener("input", function(){
-            var userInput = searchBox.value;
-            if(userInput.trim() == ""){
+    searchBox.addEventListener('input', function() {
+        var userInput = searchBox.value.trim();
+        if (userInput === "") {
+            suggestionBox.style.display = 'none';
+            suggestionBox.innerHTML = '';
+            return;
+        }
 
-            }
-            else{
-                var url1 = https//autosuggest-backend.onrender.com/api/autosuggest?q=";
-                var url3 = "&algorithm=brute&limit=10&weighted=false";
+        var url1 = "https://autosuggest-backend.onrender.com/api/autosuggest?q=";
+        var url3 = "&algorithm=brute&limit=10&weighted=false";
+        var url = url1 + encodeURIComponent(userInput) + url3;
 
-                var url = url + userInput + url3;  
+        fetch(url)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data);
+                suggestionBox.innerHTML = "";
 
-                fetch(url).
-                   them(function(response){
-                    return response.json();
-                   })
-                   .them(function(data){
-                       console.log(data);
-                   })
+                var results = data && data.results ? data.results : [];
+                if (!results.length) {
+                    suggestionBox.style.display = 'none';
+                    return;
+                }
 
-            }
-        })
-    </script>
+                results.forEach(function(item) {
+                    var div = document.createElement('div');
+                    div.classList.add('suggestion-item');
+                    div.textContent = item.text || item;
+                    div.addEventListener('click', function() {
+                        searchBox.value = item.text || item;
+                        suggestionBox.style.display = 'none';
+                    });
+                    suggestionBox.appendChild(div);
+                });
+
+                suggestionBox.style.display = 'block';
+            })
+            .catch(function(error) {
+                console.log(error);
+                suggestionBox.style.display = 'none';
+            });
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!suggestionBox.contains(event.target) && event.target !== searchBox) {
+            suggestionBox.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>
